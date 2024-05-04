@@ -4,7 +4,7 @@ from urllib.parse import urlparse, parse_qs
 import os
 import socket
 
-SOCKET_SERVER_ADDRESS = ('localhost', 5000)
+SOCKET_SERVER_ADDRESS = ('socket_server', 5000)
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
@@ -36,11 +36,13 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             with open('error.html', 'rb') as f:
                 self.copyfile(f, self.wfile)
+
     def do_POST(self):
         content_length = int(self.headers['Content-Length'])
         post_data = self.rfile.read(content_length).decode('utf-8')
         parsed_post_data = parse_qs(post_data)
-        
+        print("Received data:", parsed_post_data)
+
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             client_socket.connect(SOCKET_SERVER_ADDRESS)
             client_socket.sendall(post_data.encode())

@@ -10,4 +10,4 @@ services:
     build: ./socket_server
     ports:
       - "5000:5000"
-    command: ["python", "app/socket_server.py"]
+    command: ["python", "/app/socket_server.py"]

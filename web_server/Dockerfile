@@ -7,8 +7,6 @@ COPY style.css /app/
 COPY logo.png /app/
 COPY error.html /app/
 
-RUN pip install pymongo
-
 WORKDIR /app
 
 CMD ["python", "server.py"]
