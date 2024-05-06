@@ -9,4 +9,6 @@ COPY error.html /app/
 
 WORKDIR /app
 
+RUN pip install pymongo
+
 CMD ["python", "server.py"]

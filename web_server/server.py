@@ -3,12 +3,19 @@ import socketserver
 from urllib.parse import urlparse, parse_qs
 import os
 import socket
+import pymongo
+import json
 
 SOCKET_SERVER_ADDRESS = ('socket_server', 5000)
+
+client = pymongo.MongoClient("mongodb://root:root@mongodb:27017")
+db = client.get_database("chat")
+collection = db["chat"]
 
 class CustomHandler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse(self.path)
+
         if parsed_path.path == '/':
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
@@ -46,6 +53,8 @@ class CustomHandler(http.server.SimpleHTTPRequestHandler):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_socket:
             client_socket.connect(SOCKET_SERVER_ADDRESS)
             client_socket.sendall(post_data.encode())
+        
+        self.send_response(200)
 
 with socketserver.TCPServer(("", 3000), CustomHandler) as httpd:
     print("HTTP server is running at port 3000")

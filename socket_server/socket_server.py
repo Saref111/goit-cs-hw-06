@@ -6,8 +6,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-client = pymongo.MongoClient("mongodb+srv://root:root@cluster0.rqsgk8e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
-db = client["chat"]
+client = pymongo.MongoClient("mongodb://root:root@mongodb:27017")
+db = client.get_database("chat")
 collection = db["chat"]
 
 def handle_data(data):
